@@ -7,11 +7,13 @@ module.exports = BaseController.extend({
 	
 	content : null,
 	
-	run : function(get, req, res, next){
+	onSale : function(req, res, next){
 		model.setConnection(req.connection);
 		var self = this;
+		var storeId = req.param('storeId');
+		var numProducts = req.param('numProducts');
 
-		this.getContent(function(){
+		this.getProductsOnSale(storeId, numProducts, function(){
 			res.set('Access-Control-Allow-Origin', '*');
 			res.set('Access-Control-Allow-Method', 'POST, GET, OPTIONS');
 			res.set('Content-Type', 'application/json');
@@ -20,18 +22,13 @@ module.exports = BaseController.extend({
 
 	},
 
-	getContent: function(callback) {
+	getProductsOnSale: function(storeId, numProducts, callback) {
 		var self = this;
 		this.content = {};
-		model.getlist(function(err, records) {
+		model.getListProductsOnSale(storeId, numProducts, function(err, records) {
 			var productList = '';
 			if(records.length > 0) {
-				/*for(var i=0; record=records[i]; i++) {
-					var record = records[i];
-					productList += '<br/>record ad name ' + record.name;
-				}*/
 				productList = JSON.stringify(records);
-				//console.log(productList);
 			}
 			self.content.productList = productList;
             callback();

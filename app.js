@@ -49,7 +49,7 @@ var attachDB = function(req, res, next) {
 };
 
 app.all('/product-onsale', attachDB, function(req, res, next) {
-    Request.run('onSale', req, res, next);
+    Request.onSale(req, res, next);
 });
 
 http.createServer(app).listen(app.get('port'), function(){
