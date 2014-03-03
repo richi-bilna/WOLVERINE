@@ -12,8 +12,7 @@ var Request = require('./controllers/Request');
 var app = express();
 var config = require('./config/index')();
 var configDb = require('./config/database')();
-console.log('port : '+config.port);
-console.log('database : '+configDb.database);
+
 // all environments
 app.set('port', config.port || process.env.PORT || 3000);
 /*app.set('views', path.join(__dirname, 'views'));
