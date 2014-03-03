@@ -10,8 +10,10 @@ var path = require('path');
 var mysql = require('mysql');
 var Request = require('./controllers/Request');
 var app = express();
-var config = require('./config')();
-console.log(config.port);
+var config = require('./config/index')();
+var configDb = require('./config/database')();
+console.log('port : '+config.port);
+console.log('database : '+configDb.database);
 // all environments
 app.set('port', config.port || process.env.PORT || 3000);
 /*app.set('views', path.join(__dirname, 'views'));
@@ -37,10 +39,10 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 
 var connection = mysql.createConnection({
-	host : 'localhost',
-	user : 'root',
-	password : 'root',
-	database : 'bilna_rebirth_v2'
+	host : configDb.host,
+	user : configDb.user,
+	password : configDb.password,
+	database : configDb.database
 });
 connection.connect();
 
@@ -51,12 +53,6 @@ var attachDB = function(req, res, next) {
 
 app.all('/featured-products', attachDB, function(req, res, next) {
     Request.onFeaturedProducts(req, res, next);
-});
-app.all('/product-sale', attachDB, function(req, res, next) {
-    Request.onSale(req, res, next);
-});
-app.all('/new_arrival', attachDB, function(req, res, next) {
-    Request.onArrival(req, res, next);
 });
 
 http.createServer(app).listen(app.get('port'), function(){

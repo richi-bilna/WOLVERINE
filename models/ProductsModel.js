@@ -3,26 +3,9 @@ var Model = require("./Base"),
     model = new Model();
 
 var ProductsModel = model.extend({
-    
-    getListProductsOnSale: function(storeId, numProducts, callback) {
-        var sql = 'SELECT *, IF(CURDATE()>=DATE(news_from_date) && CURDATE()<=DATE(news_to_date), 1, 0 ) AS is_new FROM bilna_featured_product_1 LIMIT '+numProducts+'';
-        this.connection.query(sql, function (error, rows, fields) {
-            	callback(error, rows);
-        });
-
-    },
-
-    getListProductsOnArrival: function(storeId, numProducts, callback) {
-        var sql = 'SELECT *, IF(CURDATE()>=DATE(news_from_date) && CURDATE()<=DATE(news_to_date), 1, 0 ) AS is_new FROM bilna_featured_product_2 LIMIT '+numProducts+'';
-        this.connection.query(sql, function (error, rows, fields) {
-            	callback(error, rows);
-        });
-
-    },
 
     getProducts: function(idBlock, storeId, numProducts, callback){
     	var sql = 'SELECT *, IF(CURDATE()>=DATE(news_from_date) && CURDATE()<=DATE(news_to_date), 1, 0 ) AS is_new FROM bilna_featured_product_'+idBlock+' LIMIT '+numProducts+'';
-console.log(sql);        
         this.connection.query(sql, function (error, rows, fields) {
             callback(error, rows);
         });
