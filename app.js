@@ -10,9 +10,10 @@ var path = require('path');
 var mysql = require('mysql');
 var Request = require('./controllers/Request');
 var app = express();
-
+var config = require('./config')();
+console.log(config.port);
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', config.port || process.env.PORT || 3000);
 /*app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 */
@@ -48,8 +49,14 @@ var attachDB = function(req, res, next) {
     next();
 };
 
-app.all('/product-onsale', attachDB, function(req, res, next) {
+app.all('/featured-products', attachDB, function(req, res, next) {
+    Request.onFeaturedProducts(req, res, next);
+});
+app.all('/product-sale', attachDB, function(req, res, next) {
     Request.onSale(req, res, next);
+});
+app.all('/new_arrival', attachDB, function(req, res, next) {
+    Request.onArrival(req, res, next);
 });
 
 http.createServer(app).listen(app.get('port'), function(){
